@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'asd' }
+    agent { label 'jenkins-jenkins-agent' }
     environment {
         HARBOR_URL = "tkavna123"
         CI_PROJECT_PATH="spring-sample"
