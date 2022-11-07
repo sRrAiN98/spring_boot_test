@@ -1,4 +1,5 @@
 pipeline {
+    agent any
     environment {
         HARBOR_URL = "harbor.skdev.kro.kr"
         CI_PROJECT_PATH="muv-frontend"
