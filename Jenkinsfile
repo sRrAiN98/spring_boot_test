@@ -5,21 +5,20 @@ pipeline {
         CI_PROJECT_PATH="spring-sample"
         APP_NAME="spring"
     }
-    tools {
-        git 'Default'
-        jdk 'jdk'
-        maven 'maven'
-    }
       stages {
         stage('build maven') {
             steps {
+                container('maven') {
                 sh 'ls -al'
-                sh 'maven package'
+                sh 'mvn package'
+                }
             }
         }
         stage('build kaniko') {
             steps {//docker를 대체하여 kaniko 컨테이너를 사용하여 harbor에 push
+                container('maven'){
                     sh '/kaniko/executor --context ./ --dockerfile ./Dockerfile --destination $HARBOR_URL/$CI_PROJECT_PATH/$APP_NAME:${BUILD_NUMBER}'
+                }
             }
         }
         stage('push gitlab argo') {
