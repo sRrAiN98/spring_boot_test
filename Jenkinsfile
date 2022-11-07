@@ -29,7 +29,7 @@ pipeline {
                     git log | sed -n 5p > log.txt
                     LOG=`cat log.txt`
                     TAG=${BUILD_NUMBER} yq -i e '.image.tag = env(TAG)' values.yaml
-                    git add values.yaml && git commit -m "$LOG" && git push origin helm
+                    git add values.yaml && git commit -m "$LOG" && git push origin main
                     '''
                     // VALUES 파일 tag을 yq명령어로 수정하여 git commit & push 
                 }
