@@ -12,7 +12,7 @@ pipeline {
                 sh 'ls -al'
                 sh 'mvn package'
                 sh 'git log | sed -n 5p > log.txt'
-                LOG=`cat log.txt`
+                sh 'LOG=`cat log.txt`'
                 }
             }
         }
