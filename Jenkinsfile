@@ -29,12 +29,12 @@ pipeline {
                 script {
                     sh 'git log | sed -n 5p > log.txt'
                     git branch: 'main', credentialsId: 'sRrAiN', url: 'https://github.com/sRrAiN98/spring_boot_test_helm.git'
-                    sh 'LOG=`cat log.txt`'
                     sh'''
                     git config --global user.email "jenkins@example.com"
                     git config --global user.name "jenkins"
                     sed -i 's|tag: .*|tag: ${BUILD_NUMBER}|'  values.yaml
-                    echo 'hi'
+                    cat log.txt
+                    LOG=`cat log.txt`
                     git add values.yaml && git commit -m "$LOG" && git push origin main
                     '''
                 }
