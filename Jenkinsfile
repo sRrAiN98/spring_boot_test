@@ -2,8 +2,8 @@ pipeline {
     agent { label 'jenkins-jenkins-agent' }
     environment {
         HARBOR_URL = "tkavna123"
-        CI_PROJECT_PATH="spring-sample"
-        APP_NAME="spring"
+        CI_PROJECT_PATH="spring-sample-test"
+        //APP_NAME="spring"
     }
       stages {
         stage('build maven') {
@@ -19,7 +19,7 @@ pipeline {
                 container('kaniko'){
                     withCredentials([string(credentialsId: 'dockerconfig', variable: 'dockerconfig')]) {
                         sh 'echo $dockerconfig > /kaniko/.docker/config.json'
-                        sh '/kaniko/executor --context ./ --dockerfile ./Dockerfile --destination $HARBOR_URL/$CI_PROJECT_PATH/$APP_NAME:${BUILD_NUMBER}'
+                        sh '/kaniko/executor --context ./ --dockerfile ./Dockerfile --destination $HARBOR_URL/$CI_PROJECT_PATH:${BUILD_NUMBER}'
                     }
                 }
             }
