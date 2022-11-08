@@ -26,8 +26,8 @@ pipeline {
         }
         stage('push gitlab argo') {
             steps {
-withCredentials([usernamePassword(credentialsId: 'sRrAiN', passwordVariable: 'GITPW', usernameVariable: 'GITUSER')]) {                      sh 'git log | sed -n 5p > log.txt'
-                    git branch: 'main', credentialsId: 'sRrAiN', url: ''
+                withCredentials([usernamePassword(credentialsId: 'sRrAiN', passwordVariable: 'GITPW', usernameVariable: 'GITUSER')]) {             
+                    sh 'git log | sed -n 5p > log.txt'
                     sh 'git clone https://${GITUSER}:${GITPW}@$https://github.com/sRrAiN98/spring_boot_test_helm.git -b main'
                     sh'''
                     git config --global user.email "jenkins@example.com"
