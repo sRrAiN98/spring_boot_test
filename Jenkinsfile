@@ -18,7 +18,7 @@ pipeline {
             steps {//docker를 대체하여 kaniko 컨테이너를 사용하여 harbor에 push
                 container('kaniko'){
                     withCredentials([string(credentialsId: 'dockerconfig', variable: 'dockerconfig')]) {
-                        echo $dockerconfig > /kaniko/.docker/config.json
+                        sh 'echo $dockerconfig > /kaniko/.docker/config.json'
                         sh '/kaniko/executor --context ./ --dockerfile ./Dockerfile --destination $HARBOR_URL/$CI_PROJECT_PATH/$APP_NAME:${BUILD_NUMBER}'
                     }
                 }
