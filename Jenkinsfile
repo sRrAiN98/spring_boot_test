@@ -24,19 +24,19 @@ pipeline {
                 }
             }
         }
-        stage('push gitlab argo') {
+        stage('push helm values') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'sRrAiN', passwordVariable: 'GITPW', usernameVariable: 'GITUSER')]) {             
+                withCredentials([string(credentialsId: 'github_token', variable: 'TOKEN')]) {
                     sh 'git log | sed -n 5p > log.txt'
-                    sh 'git clone https://${GITUSER}:${GITPW}@$https://github.com/sRrAiN98/spring_boot_test_helm.git -b main'
+                    git branch: 'main', credentialsId: 'sRrAiN', url: 'https://github.com/sRrAiN98/spring_boot_test_helm.git'                    
                     sh'''
                     git config --global user.email "jenkins@example.com"
                     git config --global user.name "jenkins"
-                    sed -i 's|tag: .*|tag: ${BUILD_NUMBER}|'  values.yaml
+                    sed -i 's|tag: .*|tag: ${env.BUILD_NUMBER}|' values.yaml
                     cat log.txt
                     LOG=`cat log.txt`
                     git add values.yaml && git commit -m "$LOG" 
-                    git push
+                    git push https://sRrAiN98:${TOKEN}@github.com/sRrAiN98/spring_boot_test_helm.git
                     '''
                 }
             }
