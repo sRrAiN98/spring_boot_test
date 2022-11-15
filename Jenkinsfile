@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'jenkins-jenkins-agent' }
     environment {
-        HARBOR_URL = "tkavna123"
+        DockerID = "tkavna123"
         CI_PROJECT_PATH="spring-sample-test"
         //APP_NAME="spring"
     }
@@ -19,7 +19,7 @@ pipeline {
                 container('kaniko'){
                     withCredentials([string(credentialsId: 'dockerconfig', variable: 'dockerconfig')]) {
                         sh 'echo $dockerconfig > /kaniko/.docker/config.json'
-                        sh '/kaniko/executor --context ./ --dockerfile ./Dockerfile --destination $HARBOR_URL/$CI_PROJECT_PATH:${BUILD_NUMBER}'
+                        sh '/kaniko/executor --context ./ --dockerfile ./Dockerfile --destination $DockerID/$CI_PROJECT_PATH:${BUILD_NUMBER}'
                     }
                 }
             }
@@ -32,7 +32,7 @@ pipeline {
                     sh'''
                     git config --global user.email "jenkins@example.com"
                     git config --global user.name "jenkins"
-                    sed -i 's|tag: .*|tag: ${env.BUILD_NUMBER}|' values.yaml
+                    sed -i "s|tag: .*|tag: ${BUILD_NUMBER}|g" values.yaml
                     cat log.txt
                     LOG=`cat log.txt`
                     git add values.yaml && git commit -m "$LOG" 
